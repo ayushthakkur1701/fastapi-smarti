@@ -21,17 +21,10 @@ depends_on: Union[str, Sequence[str], None] = None
 def upgrade() -> None:
     # Check if 'published' column exists
     # Use a direct query to check for the column existence
-    conn = op.get_bind()
-    if not conn.dialect.has_column(conn, 'posts', 'published'):
-        op.add_column('posts', sa.Column('published', sa.Boolean(), nullable=False, server_default='True'))
-
-    # Check if 'created_at' column exists
-    if not conn.dialect.has_column(conn, 'posts', 'created_at'):
-        op.add_column('posts', sa.Column('created_at', sa.TIMESTAMP(timezone=True), server_default=sa.text('now()')))
+    
     pass
 
 
 def downgrade() -> None:
-    op.drop_column('published',table_name='posts')
-    op.drop_column('created_at',table_name='posts')
+    
     pass
