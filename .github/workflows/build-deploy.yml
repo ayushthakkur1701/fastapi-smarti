@@ -82,10 +82,10 @@ jobs:
       - name: Deploying To Ubuntu Server
         uses: appleboy/ssh-action@v1.2.0
         with:
-          host: ${{secrets.PROD_HOST}}
-          username: ${{secrets.PROD_USERNAME}}
-          password: ${{secrets.PROD_PASSWORD}}
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USERNAME }}
+          password: ${{ secrets.PROD_PASSWORD }}
           script: |
             cd app/src
             git pull
-            sudo systemctl restart api
+            echo ${{ secrets.PROD_PASSWORD }} | sudo -S systemctl restart api
