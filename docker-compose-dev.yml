@@ -1,0 +1,59 @@
+version: '3'
+services:
+
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Unicca2024
+      - POSTGRES_DB=fastapi
+
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+    healthcheck:
+         test: ["CMD-SHELL", "pg_isready -U postgres"]
+         interval: 10s
+         timeout: 5s
+         retries: 5
+
+  api:
+      build: .
+
+      volumes:
+      - type: bind
+        source: .
+        target: /usr/src/app
+      working_dir: /usr/src/app
+
+      depends_on:
+        postgres:
+          condition: service_healthy
+
+      ports: 
+          - 8000:8000
+
+      environment:
+        -  DATABASE_HOSTNAME=postgres #name of postgres service
+        -  DATABASE_PORT=5432
+        -  DATABASE_USERNAME=postgres
+        -  DATABASE_PASSWORD=Unicca2024
+        -  DATABASE_NAME=fastapi
+        -  SECRET_KEY=asidhaishd3242i3h4i234b23kh4k2h34234212jh
+        -  ALGORITHM=HS256
+        -  ACCESS_TOKEN_EXPIRE_MINUTES=30
+
+      command: ["wait-for-it", "postgres:5432", "--", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000","--reload"]
+  
+
+  alembic:
+      build: .
+      depends_on:
+        - postgres
+      command: ["alembic", "upgrade", "head"]
+
+volumes:
+  postgres-db: 
+
