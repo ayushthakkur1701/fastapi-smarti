@@ -15,4 +15,4 @@ jobs:
       - name: pulling git repo
         uses: actions/checkout@v2
       - name: say hi to smarti
-        run: echo"Hi Smarti"
+        run: echo "Hi Smarti"
