@@ -40,5 +40,5 @@ app.include_router(vote.router)
 @app.get("/")
 def root():
     
-    return {"message":"Hello World ... deployed to server"}
+    return {"message":"Hello World ... Chanegs Deployed"}
 
