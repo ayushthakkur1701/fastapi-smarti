@@ -74,10 +74,11 @@ jobs:
       #   run: echo ${{ steps.docker_build.outputs.digest}}
 
   deploy:
-    environment:
-      name: production
+    
     runs-on: ubuntu-latest
     needs: [ build ]
+    environment:
+      name: production
     steps:
       - name: Deploying To Ubuntu Server
         uses: appleboy/ssh-action@master
